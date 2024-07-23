@@ -1,9 +1,6 @@
 "use strict";
-// JM, 07/22/2024
+// JM, 07/23/2024
 const CHOICES = ["Rock", "Paper", "Scissors"];
-let humanScore = 0;
-let computerScore = 0;
-let tieScore = 0;
 
 let capitalizeFirstLetter = (str) => {
     return `${str.slice(0, 1).toUpperCase()}${str.slice(1, str.length).toLowerCase()}`;
@@ -24,27 +21,42 @@ let getHumanChoice = () => {
     }
 }
 
-let playRound = (humanChoice, computerChoice) => {
+let playGame = () => {
+    let humanScore = 0;
+    let computerScore = 0;
+
+    let playRound = (humanChoice, computerChoice) => {
     
-    if (humanChoice === computerChoice) {
-        console.log(`Tie! ${humanChoice} ties ${computerChoice}.`);
-        tieScore += 1;
-        return `Tie! ${humanChoice} ties ${computerChoice}.`;
-    } else if (
+        if (humanChoice === computerChoice) {
+            console.log(`Tie! ${humanChoice} ties ${computerChoice}.`);
+            return playRound(getHumanChoice(), getComputerChoice());
+        } else if (
 
-        (humanChoice === "rock" && computerChoice === "scissors") ||
-        (humanChoice === "paper" && computerChoice === "rock") ||
-        (humanChoice === "scissors" && computerChoice === "paper")
+            (humanChoice === "Rock" && computerChoice === "Scissors") ||
+            (humanChoice === "Paper" && computerChoice === "Rock") ||
+            (humanChoice === "Scissors" && computerChoice === "Paper")
+    
+        ) {
+            console.log(`You win! ${humanChoice} beats ${computerChoice}.`);
+            humanScore += 1;
+            return `You win! ${humanChoice} beats ${computerChoice}.`;
+        } else {
+            console.log(`Computer wins! ${computerChoice} beats ${humanChoice}.`);
+            computerScore += 1;
+            return `Computer wins! ${computerChoice} beats ${humanChoice}.`;
+        }
+    }
 
-    ) {
-        console.log(`You win! ${humanChoice} beats ${computerChoice}.`);
-        humanScore += 1;
-        return `You win! ${humanChoice} beats ${computerChoice}.`;
+    console.log("Let's play Rock, Paper, Scissors, best 3 out of 5.");
+    do {
+        playRound(getHumanChoice(), getComputerChoice());
+    } while (humanScore <= 2 && computerScore <= 2)
+    
+    if (humanScore > computerScore) {
+        return `You win! (${humanScore} to ${computerScore})`;
     } else {
-        console.log(`Computer wins! ${computerChoice} beats ${humanChoice}.`);
-        computerScore += 1;
-        return `Computer wins! ${computerChoice} beats ${humanChoice}.`;
+        return `Computer wins! (${computerScore} to ${humanScore})`;
     }
 }
 
-playRound(getHumanChoice(), getComputerChoice());
+console.log(playGame());
