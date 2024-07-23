@@ -21,7 +21,8 @@ let getHumanChoice = () => {
     }
 }
 
-let playGame = () => {
+let playGame = (outOf) => {
+    const WINROUNDS = Math.floor(outOf / 2) + 1;
     let humanScore = 0;
     let computerScore = 0;
 
@@ -47,10 +48,10 @@ let playGame = () => {
         }
     }
 
-    console.log("Let's play Rock, Paper, Scissors, best 3 out of 5.");
+    console.log(`Let's play Rock, Paper, Scissors, best ${WINROUNDS} out of ${outOf}.`);
     do {
         playRound(getHumanChoice(), getComputerChoice());
-    } while (humanScore <= 2 && computerScore <= 2)
+    } while (humanScore < WINROUNDS && computerScore < WINROUNDS)
     
     if (humanScore > computerScore) {
         return `You win! (${humanScore} to ${computerScore})`;
@@ -59,4 +60,4 @@ let playGame = () => {
     }
 }
 
-console.log(playGame());
+console.log(playGame(5));
