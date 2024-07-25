@@ -23,7 +23,7 @@ let getHumanChoice = (choice) => {
 }
 
 let updateResults = () => {
-    RESULTS.textContent = `Player: ${humanScore} | Computer: ${computerScore}`;
+    RESULTS.textContent = `😁 Player: ${humanScore} | 💻 Computer: ${computerScore}`;
 }
 
 let changeGameText = (humanChoice, computerChoice, winner) => {
