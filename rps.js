@@ -23,7 +23,7 @@ let getHumanChoice = (choice) => {
 }
 
 let updateResults = () => {
-    RESULTS.textContent = `Human: ${humanScore} | Computer: ${computerScore}`;
+    RESULTS.textContent = `Player: ${humanScore} | Computer: ${computerScore}`;
 }
 
 let changeGameText = (humanChoice, computerChoice, winner) => {
@@ -88,7 +88,7 @@ let endGame = () => {
     const WINNER = document.createElement("p");
     WINNER.id = "winner";
     if (humanScore > computerScore) {
-        WINNER.textContent += `You win! (${humanScore} to ${computerScore})`;
+        WINNER.textContent += `Player wins! (${humanScore} to ${computerScore})`;
     } else {
         WINNER.textContent += `Computer wins! (${computerScore} to ${humanScore})`;
     }
