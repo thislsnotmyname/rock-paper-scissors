@@ -4,6 +4,7 @@ const CHOICES = ["Rock", "Paper", "Scissors"];
 
 let humanScore = 0;
 let computerScore = 0;
+let winrounds = 0;
 
 const BUTTONS = document.querySelector("#playing-field");
 const GAME_TEXT = document.querySelector("#game-text");
@@ -43,7 +44,6 @@ let changeGameText = (humanChoice, computerChoice, winner) => {
 };
 
 let playRound = (humanChoice, computerChoice) => {
-    
     if (humanChoice === computerChoice) {
         changeGameText(humanChoice, computerChoice, "Tie");
     } else if (
@@ -57,27 +57,55 @@ let playRound = (humanChoice, computerChoice) => {
         changeGameText(humanChoice, computerChoice, "Computer");
         computerScore += 1;
     }
-
     updateResults();
+    
+    if (isGameEnd()) return endGame();
+}
+
+let isGameEnd = () => {
+    if (humanScore === winrounds || computerScore === winrounds) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 let initGame = (outOf) => {
-    const WINROUNDS = Math.floor(outOf / 2) + 1;
-    GAME_TEXT.textContent = `Let's play Rock, Paper, Scissors, best ${WINROUNDS} out of ${outOf}.`;
-    updateResults();
-    // if (humanScore === WINROUNDS || computerScore === WINROUNDS) {
-    //     if (humanScore > computerScore) {
-    //         return `You win! (${humanScore} to ${computerScore})`;
-    //     } else {
-    //         return `Computer wins! (${computerScore} to ${humanScore})`;
-    //     }
-    // }
+    winrounds = Math.floor(outOf / 2) + 1;
+    humanScore = 0;
+    computerScore = 0;
 
+    if (document.querySelector("#winner") !== null) document.querySelector("#winner").remove();
+    if (document.querySelector("#play-again") !== null) document.querySelector("#play-again").remove();
+
+    GAME_TEXT.textContent = `Let's play Rock, Paper, Scissors, best ${winrounds} out of ${outOf}.`;
+    updateResults();
+}
+
+let endGame = () => {
+    if (document.querySelector("#winner") !== null) return;
+    
+    const WINNER = document.createElement("p");
+    WINNER.id = "winner";
+    if (humanScore > computerScore) {
+        WINNER.textContent += `You win! (${humanScore} to ${computerScore})`;
+    } else {
+        WINNER.textContent += `Computer wins! (${computerScore} to ${humanScore})`;
+    }
+    GAME_TEXT.append(WINNER);
+    
+    const PLAY_AGAIN = document.createElement("button");
+    
+    PLAY_AGAIN.id = "play-again";
+    PLAY_AGAIN.textContent = "Play again?";
+    PLAY_AGAIN.addEventListener("click", (e) => initGame(5));
+    
+    BUTTONS.append(PLAY_AGAIN);
 }
 
 BUTTONS.addEventListener("click", (e) => {
-    if (e.target.nodeName !== "BUTTON") return;
-    playRound(getHumanChoice(e.target.id), getComputerChoice());
+    if (!CHOICES.includes(capitalizeFirstLetter(e.target.id))) return;
+    if (!isGameEnd()) playRound(getHumanChoice(e.target.id), getComputerChoice());
 });
 
 initGame(5);
